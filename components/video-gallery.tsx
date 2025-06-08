@@ -74,7 +74,7 @@ const videos: Video[] = [
     duration: "1:00:01",
     views: "56K",
     category: "nature",
-    youtubeId: "YOUR_REAL_VIDEO_ID_5", // Reemplaza con el ID real
+    youtubeId: "ffqd0lWYcQE",
     description:
       "Transport yourself to an enchanted rainforest with these immersive nature sounds that create a peaceful atmosphere.",
     uploadDate: "6 months ago",
@@ -86,7 +86,7 @@ const videos: Video[] = [
     duration: "59:38",
     views: "63K",
     category: "meditation",
-    youtubeId: "YOUR_REAL_VIDEO_ID_6", // Reemplaza con el ID real
+    youtubeId: "8rAqYCB93Lo",
     description:
       "Let the gentle sounds of a bamboo forest guide you into a state of deep relaxation and mindfulness.",
     uploadDate: "6 months ago",
@@ -107,18 +107,10 @@ export function VideoGallery() {
   }
 
   const getYouTubeUrl = (youtubeId: string) => {
-    // Si el ID no está configurado, redirigir al canal
-    if (youtubeId.startsWith("YOUR_REAL_VIDEO_ID")) {
-      return "https://www.youtube.com/@RelaxedAxolotl"
-    }
     return `https://www.youtube.com/watch?v=${youtubeId}`
   }
 
   const getEmbedUrl = (youtubeId: string) => {
-    // Si el ID no está configurado, mostrar mensaje
-    if (youtubeId.startsWith("YOUR_REAL_VIDEO_ID")) {
-      return null
-    }
     return `https://www.youtube.com/embed/${youtubeId}?autoplay=1`
   }
 
