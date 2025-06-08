@@ -1,1151 +1,420 @@
 "use client"
-
-import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import {
-  Play,
-  Heart,
-  Users,
-  Youtube,
-  Instagram,
-  Twitter,
-  Star,
-  Search,
-  ChevronLeft,
-  ChevronRight,
-  MessageCircle,
-  Send,
-  Calendar,
-  Clock,
-  User,
-  Mail,
-  Phone,
-} from "lucide-react"
-import { Card, CardContent } from "@/components/ui/card"
+import { motion } from "framer-motion"
+import { Play, MessageCircle, Send, Youtube } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { BlogSlider } from "@/components/blog-slider"
+import { VideoGallery } from "@/components/video-gallery"
+import { CommunitySection } from "@/components/community-section"
+import { Navigation } from "@/components/navigation"
+import { ScrollToTop } from "@/components/scroll-to-top"
+import { ContactSection } from "@/components/contact-form"
 
 export default function HomePage() {
-  const [selectedCategory, setSelectedCategory] = useState("Todos")
-  const [currentVideoIndex, setCurrentVideoIndex] = useState(0)
-  const [currentBlogSlide, setCurrentBlogSlide] = useState(0)
-
-  const blogCategories = ["Todos", "Meditación", "Mindfulness", "Bienestar", "Técnicas", "Lifestyle"]
-
-  const blogPosts = [
-    {
-      id: 1,
-      title: "Los Beneficios Profundos de la Meditación Diaria",
-      excerpt:
-        "Descubre cómo 10 minutos de meditación pueden transformar completamente tu día y elevar tu bienestar general a niveles extraordinarios.",
-      content: "La meditación diaria es una práctica transformadora que puede cambiar tu vida de maneras profundas...",
-      date: "15 Nov 2024",
-      readTime: "8 min",
-      category: "Meditación",
-      author: "Relaxed Axolotl Team",
-      comments: 24,
-      image: "/placeholder.svg?height=300&width=500",
-    },
-    {
-      id: 2,
-      title: "Frecuencias Curativas: El Poder del Sonido",
-      excerpt:
-        "Explora el fascinante mundo de las frecuencias sonoras y cómo pueden influir profundamente en tu estado mental, emocional y espiritual.",
-      content: "Las frecuencias curativas han sido utilizadas durante milenios...",
-      date: "12 Nov 2024",
-      readTime: "12 min",
-      category: "Técnicas",
-      author: "Relaxed Axolotl Team",
-      comments: 18,
-      image: "/placeholder.svg?height=300&width=500",
-    },
-    {
-      id: 3,
-      title: "Creando tu Santuario Personal de Paz",
-      excerpt:
-        "Guía completa para diseñar un espacio sagrado en tu hogar donde puedas meditar, reflexionar y encontrar la tranquilidad absoluta.",
-      content: "Crear un espacio sagrado es fundamental para una práctica consistente...",
-      date: "8 Nov 2024",
-      readTime: "6 min",
-      category: "Lifestyle",
-      author: "Relaxed Axolotl Team",
-      comments: 31,
-      image: "/placeholder.svg?height=300&width=500",
-    },
-    {
-      id: 4,
-      title: "Respiración Consciente: Tu Ancla al Presente",
-      excerpt:
-        "Técnicas avanzadas de respiración que puedes usar en cualquier momento para centrarte, encontrar calma y conectar con tu esencia.",
-      content: "La respiración consciente es una de las herramientas más poderosas...",
-      date: "5 Nov 2024",
-      readTime: "10 min",
-      category: "Mindfulness",
-      author: "Relaxed Axolotl Team",
-      comments: 15,
-      image: "/placeholder.svg?height=300&width=500",
-    },
-  ]
-
-  const videos = [
-    {
-      id: "1",
-      title: "Ondas Serenas | Sonidos Oceánicos para Meditación Profunda",
-      duration: "45:30",
-      description:
-        "Sumérgete en las profundidades del océano con sonidos naturales que te llevarán a un estado de relajación absoluta.",
-      thumbnail: "/placeholder.svg?height=180&width=320",
-      views: "125K",
-    },
-    {
-      id: "2",
-      title: "Bosque Místico | Melodías Naturales para Conectar con la Tierra",
-      duration: "38:15",
-      description:
-        "Conecta con la energía ancestral del bosque a través de melodías que despiertan tu conexión con la naturaleza.",
-      thumbnail: "/placeholder.svg?height=180&width=320",
-      views: "89K",
-    },
-    {
-      id: "3",
-      title: "Luz Dorada | Armonías Cálidas para el Amanecer Interior",
-      duration: "52:20",
-      description:
-        "Despierta tu luz interior con armonías doradas que iluminan tu camino hacia la paz y la claridad mental.",
-      thumbnail: "/placeholder.svg?height=180&width=320",
-      views: "156K",
-    },
-    {
-      id: "4",
-      title: "Respiración Cósmica | Frecuencias que Sincronizan tu Ser",
-      duration: "41:45",
-      description:
-        "Sincroniza tu respiración con frecuencias cósmicas que elevan tu conciencia a dimensiones superiores.",
-      thumbnail: "/placeholder.svg?height=180&width=320",
-      views: "203K",
-    },
-    {
-      id: "5",
-      title: "Jardín Zen | Melodías Minimalistas para la Contemplación",
-      duration: "36:30",
-      description: "Encuentra la belleza en la simplicidad con melodías zen que cultivan la contemplación profunda.",
-      thumbnail: "/placeholder.svg?height=180&width=320",
-      views: "94K",
-    },
-  ]
-
-  const filteredPosts =
-    selectedCategory === "Todos" ? blogPosts : blogPosts.filter((post) => post.category === selectedCategory)
-
-  const nextVideo = () => {
-    setCurrentVideoIndex((prev) => (prev + 1) % videos.length)
-  }
-
-  const prevVideo = () => {
-    setCurrentVideoIndex((prev) => (prev - 1 + videos.length) % videos.length)
-  }
-
-  const nextBlogSlide = () => {
-    setCurrentBlogSlide((prev) => (prev + 1) % Math.ceil(filteredPosts.length / 2))
-  }
-
-  const prevBlogSlide = () => {
-    setCurrentBlogSlide(
-      (prev) => (prev - 1 + Math.ceil(filteredPosts.length / 2)) % Math.ceil(filteredPosts.length / 2),
-    )
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-warmBrown-50">
-      {/* Header */}
-      <motion.header
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="relative min-h-screen flex items-center justify-center overflow-hidden"
-      >
-        {/* Background */}
-        <div className="absolute inset-0">
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{
-              backgroundImage: `url('/placeholder.svg?height=1080&width=1920')`,
-              filter: "brightness(0.3)",
-            }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-br from-warmBrown-900/80 via-amber-900/60 to-orange-900/70" />
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-50 overflow-x-hidden">
+      {/* Navigation */}
+      <Navigation />
 
-        {/* Floating elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <motion.div
-            animate={{
-              x: [0, 100, 0],
-              y: [0, -50, 0],
-              rotate: [0, 180, 360],
-            }}
-            transition={{
-              duration: 20,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: "linear",
-            }}
-            className="absolute top-1/4 left-1/4 w-32 h-32 bg-gradient-to-r from-amber-400/20 to-orange-400/20 rounded-full blur-xl"
-          />
-          <motion.div
-            animate={{
-              x: [0, -80, 0],
-              y: [0, 60, 0],
-              rotate: [360, 180, 0],
-            }}
-            transition={{
-              duration: 25,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: "linear",
-            }}
-            className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-gradient-to-r from-orange-400/20 to-warmBrown-400/20 rounded-full blur-xl"
-          />
-        </div>
+      {/* Header Section */}
+      <header id="home" className="relative py-20 overflow-hidden">
+        {/* Background Image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
+          style={{
+            backgroundImage: `url('/hero-background.jpg')`,
+          }}
+        />
 
-        {/* Content */}
-        <div className="relative z-10 text-center px-6 max-w-6xl mx-auto">
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-amber-50/30 to-orange-50/40" />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 1, delay: 0.5 }}
-            className="mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="mb-8"
           >
-            <div className="relative inline-block">
-              <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full blur-2xl opacity-50 animate-pulse" />
-              <img
-                src="/placeholder.svg?height=150&width=150"
-                alt="Relaxed Axolotl Logo"
-                className="relative w-40 h-40 mx-auto rounded-full border-4 border-cream-200/50 shadow-2xl"
-                width={150}
-                height={150}
-              />
-            </div>
+            <img
+              src="/logo-relaxed-axolotl.png"
+              alt="Relaxed Axolotl Logo"
+              className="h-24 sm:h-32 w-auto mx-auto mb-8"
+            />
           </motion.div>
 
           <motion.h1
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.8 }}
-            className="text-7xl md:text-9xl font-serif font-light text-cream-50 mb-8 leading-tight"
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-3xl sm:text-5xl md:text-6xl font-bold text-amber-900 mb-6"
           >
-            Relaxed Axolotl
+            Find Your Inner Peace
           </motion.h1>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 1.2 }}
-            className="space-y-6"
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="text-lg sm:text-xl md:text-2xl text-amber-700 mb-8 max-w-3xl mx-auto px-4"
           >
-            <h2 className="text-3xl md:text-4xl text-amber-100 font-light leading-relaxed">
-              "Encuentra la paz en el silencio, la sabiduría en la quietud"
-            </h2>
-            <p className="text-xl text-cream-200/90 max-w-4xl mx-auto leading-relaxed">
-              Bienvenido a un oasis de tranquilidad donde cada sonido, cada melodía y cada momento está diseñado para
-              nutrir tu alma y elevar tu espíritu hacia la serenidad absoluta.
-            </p>
-          </motion.div>
+            "Tranquility isn't found in the absence of noise, but in the presence of harmony. Let our sounds guide your
+            journey to inner peace."
+          </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 1.6 }}
-            className="mt-12"
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="flex flex-col sm:flex-row gap-4 justify-center px-4"
           >
             <Button
               size="lg"
-              className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white px-12 py-6 text-2xl font-medium rounded-full shadow-2xl transition-all duration-500 hover:scale-105"
+              className="bg-gradient-to-r from-amber-600 to-orange-500 hover:from-amber-700 hover:to-orange-600 text-white px-6 sm:px-8 py-4 sm:py-6 text-base sm:text-lg font-medium"
             >
-              <Heart className="w-6 h-6 mr-3" />
-              Comenzar tu Viaje
+              <Play className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+              Start Listening
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-2 border-amber-600 text-amber-700 hover:bg-amber-50 px-6 sm:px-8 py-4 sm:py-6 text-base sm:text-lg font-medium"
+            >
+              Explore Our Content
             </Button>
           </motion.div>
         </div>
-      </motion.header>
+      </header>
 
-      {/* Blog Interactivo */}
-      <section className="py-24 bg-gradient-to-b from-cream-50 to-amber-50">
-        <div className="container mx-auto px-6">
-          <motion.header
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-5xl md:text-6xl font-serif font-light text-warmBrown-900 mb-8">
-              Sabiduría y Reflexiones
-            </h2>
-            <p className="text-2xl text-warmBrown-700 max-w-3xl mx-auto leading-relaxed">
-              Explora artículos profundos sobre meditación, mindfulness y el arte de vivir conscientemente
+      {/* Blog Section with Slider */}
+      <section id="blog" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-white/70">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-amber-900 mb-4">Meditation & Wellness Blog</h2>
+            <p className="text-lg sm:text-xl text-amber-700 max-w-3xl mx-auto px-4">
+              Discover insights, tips, and stories to enhance your meditation practice and overall wellbeing
             </p>
-          </motion.header>
+          </div>
 
-          {/* Filtros */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="flex flex-wrap justify-center gap-4 mb-12"
-          >
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-warmBrown-500 w-5 h-5" />
-              <Input
-                placeholder="Buscar artículos..."
-                className="pl-10 pr-4 py-3 w-80 bg-white/80 border-warmBrown-200 focus:border-orange-400 rounded-full"
+          <div className="mb-12">
+            <Tabs defaultValue="all" className="w-full">
+              <TabsList className="grid grid-cols-4 max-w-md mx-auto mb-8">
+                <TabsTrigger value="all" className="text-xs sm:text-sm">
+                  All
+                </TabsTrigger>
+                <TabsTrigger value="meditation" className="text-xs sm:text-sm">
+                  Meditation
+                </TabsTrigger>
+                <TabsTrigger value="wellness" className="text-xs sm:text-sm">
+                  Wellness
+                </TabsTrigger>
+                <TabsTrigger value="music" className="text-xs sm:text-sm">
+                  Music
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="all" className="mt-8">
+                <BlogSlider />
+              </TabsContent>
+              <TabsContent value="meditation" className="mt-8">
+                <BlogSlider category="meditation" />
+              </TabsContent>
+              <TabsContent value="wellness" className="mt-8">
+                <BlogSlider category="wellness" />
+              </TabsContent>
+              <TabsContent value="music" className="mt-8">
+                <BlogSlider category="music" />
+              </TabsContent>
+            </Tabs>
+          </div>
+
+          {/* Featured Blogog Post - Two Columns */}
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 bg-amber-50/50 rounded-xl p-6 sm:p-8 shadow-lg">
+            <div>
+              <h3 className="text-xl sm:text-2xl font-bold text-amber-900 mb-4">
+                The Science Behind Binaural Beats: How Sound Affects Your Brain
+              </h3>
+              <p className="text-amber-700 mb-6 leading-relaxed text-sm sm:text-base">
+                Binaural beats have gained popularity in meditation and relaxation practices, but what exactly are they
+                and how do they work? This article explores the science behind this fascinating auditory phenomenon and
+                how it can potentially enhance your meditation experience.
+              </p>
+              <p className="text-amber-700 mb-6 leading-relaxed text-sm sm:text-base">
+                When you listen to two slightly different frequencies in each ear, your brain processes a beat at the
+                difference of the frequencies. This is called a binaural beat.
+              </p>
+              <Button className="bg-amber-600 hover:bg-amber-700 text-white">Read Full Article</Button>
+            </div>
+
+            {/* Comments Section */}
+            <div className="bg-white rounded-xl p-4 sm:p-6 shadow-md">
+              <h4 className="text-lg sm:text-xl font-semibold text-amber-900 mb-4 flex items-center">
+                <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                Community Discussion
+              </h4>
+
+              <div className="space-y-4 mb-6">
+                <div className="border-b border-amber-100 pb-4">
+                  <div className="flex justify-between mb-2">
+                    <span className="font-medium text-amber-800 text-sm sm:text-base">MeditationLover</span>
+                    <span className="text-amber-500 text-xs sm:text-sm">2 days ago</span>
+                  </div>
+                  <p className="text-amber-700 text-sm sm:text-base">
+                    I've been using binaural beats for my meditation practice for about 3 months now, and the difference
+                    in my focus is remarkable. Great article explaining the science!
+                  </p>
+                </div>
+
+                <div className="border-b border-amber-100 pb-4">
+                  <div className="flex justify-between mb-2">
+                    <span className="font-medium text-amber-800 text-sm sm:text-base">PeacefulMind</span>
+                    <span className="text-amber-500 text-xs sm:text-sm">5 days ago</span>
+                  </div>
+                  <p className="text-amber-700 text-sm sm:text-base">
+                    Could you recommend specific frequencies for deep relaxation vs. focus? I'm new to this and would
+                    love some guidance.
+                  </p>
+                </div>
+
+                <div className="border-b border-amber-100 pb-4">
+                  <div className="flex justify-between mb-2">
+                    <span className="font-medium text-amber-800 text-sm sm:text-base">RelaxedAxolotl</span>
+                    <span className="text-amber-500 text-xs sm:text-sm">4 days ago</span>
+                  </div>
+                  <p className="text-amber-700 text-sm sm:text-base">
+                    @PeacefulMind For relaxation, try frequencies in the theta range (4-8 Hz). For focus, alpha range
+                    (8-13 Hz) works well for most people. We'll cover this in our next article!
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-2">
+                <Input placeholder="Add your thoughts..." className="border-amber-200 text-sm" />
+                <Button size="icon" className="bg-amber-600 hover:bg-amber-700 flex-shrink-0">
+                  <Send className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* YouTube Videos Section */}
+      <section
+        id="videos"
+        className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-amber-50 to-orange-100"
+      >
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-amber-900 mb-4">Featured Videos</h2>
+            <p className="text-lg sm:text-xl text-amber-700 max-w-3xl mx-auto px-4">
+              Explore our collection of meditation music, nature sounds, and relaxation guides
+            </p>
+          </div>
+
+          <VideoGallery />
+        </div>
+      </section>
+
+      {/* Community Section */}
+      <section id="community" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-white/70">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-amber-900 mb-4">Join Our Community</h2>
+            <p className="text-lg sm:text-xl text-amber-700 max-w-3xl mx-auto px-4">
+              Connect with like-minded individuals on our various platforms and be part of our growing community
+            </p>
+          </div>
+
+          <CommunitySection />
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <ContactSection />
+
+      {/* About Us Section */}
+      <section id="about" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-white/70">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-amber-900 mb-4">About Relaxed Axolotl</h2>
+            <p className="text-lg sm:text-xl text-amber-700 max-w-3xl mx-auto px-4">
+              Our story, mission, and the team behind the music
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            <div className="relative rounded-xl overflow-hidden h-64 sm:h-80 lg:h-96">
+              <img
+                src="/placeholder.svg?height=400&width=600"
+                alt="Relaxed Axolotl Studio"
+                className="absolute inset-0 w-full h-full object-cover"
               />
             </div>
-            <div className="flex gap-2">
-              {blogCategories.map((category) => (
-                <Button
-                  key={category}
-                  variant={selectedCategory === category ? "default" : "outline"}
-                  onClick={() => setSelectedCategory(category)}
-                  className={
-                    selectedCategory === category
-                      ? "bg-gradient-to-r from-orange-500 to-warmBrown-600 text-white rounded-full px-6"
-                      : "border-warmBrown-300 text-warmBrown-700 hover:bg-warmBrown-100 rounded-full px-6"
-                  }
-                >
-                  {category}
-                </Button>
-              ))}
-            </div>
-          </motion.div>
 
-          {/* Blog Slider */}
-          <div className="relative max-w-7xl mx-auto">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentBlogSlide}
-                initial={{ opacity: 0, x: 100 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -100 }}
-                transition={{ duration: 0.5 }}
-                className="grid md:grid-cols-2 gap-8"
-              >
-                {filteredPosts.slice(currentBlogSlide * 2, currentBlogSlide * 2 + 2).map((post) => (
-                  <Card
-                    key={post.id}
-                    className="bg-white/90 backdrop-blur-sm border-warmBrown-200/50 hover:shadow-2xl transition-all duration-500 group rounded-2xl overflow-hidden"
-                  >
-                    <CardContent className="p-0">
-                      <div className="relative">
-                        <img
-                          src={post.image || "/placeholder.svg"}
-                          alt={post.title}
-                          className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-                        <div className="absolute top-4 left-4">
-                          <span className="bg-gradient-to-r from-orange-500 to-warmBrown-600 text-white text-sm font-medium px-3 py-1 rounded-full">
-                            {post.category}
-                          </span>
-                        </div>
-                        <div className="absolute top-4 right-4 flex items-center space-x-2">
-                          <span className="bg-black/50 text-white text-sm px-2 py-1 rounded-full flex items-center">
-                            <Clock className="w-3 h-3 mr-1" />
-                            {post.readTime}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="p-8">
-                        <h3 className="text-2xl font-serif font-semibold text-warmBrown-900 mb-4 group-hover:text-orange-700 transition-colors">
-                          {post.title}
-                        </h3>
-                        <p className="text-warmBrown-700 mb-6 leading-relaxed">{post.excerpt}</p>
-                        <div className="flex items-center justify-between mb-6">
-                          <div className="flex items-center space-x-4">
-                            <span className="text-sm text-warmBrown-600 flex items-center">
-                              <Calendar className="w-4 h-4 mr-1" />
-                              {post.date}
-                            </span>
-                            <span className="text-sm text-warmBrown-600 flex items-center">
-                              <User className="w-4 h-4 mr-1" />
-                              {post.author}
-                            </span>
-                          </div>
-                          <span className="text-sm text-warmBrown-600 flex items-center">
-                            <MessageCircle className="w-4 h-4 mr-1" />
-                            {post.comments} comentarios
-                          </span>
-                        </div>
-
-                        {/* Área de comentarios */}
-                        <div className="border-t border-warmBrown-200 pt-6">
-                          <h4 className="text-lg font-medium text-warmBrown-800 mb-4">Únete a la conversación</h4>
-                          <div className="flex space-x-3">
-                            <Input
-                              placeholder="Comparte tu reflexión..."
-                              className="flex-1 bg-warmBrown-50 border-warmBrown-200 focus:border-orange-400"
-                            />
-                            <Button className="bg-gradient-to-r from-orange-500 to-warmBrown-600 text-white px-4">
-                              <Send className="w-4 h-4" />
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </motion.div>
-            </AnimatePresence>
-
-            {/* Navigation */}
-            <div className="flex justify-center items-center space-x-4 mt-8">
-              <Button
-                variant="outline"
-                onClick={prevBlogSlide}
-                className="rounded-full p-3 border-warmBrown-300 hover:bg-warmBrown-100"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </Button>
-              <div className="flex space-x-2">
-                {Array.from({ length: Math.ceil(filteredPosts.length / 2) }).map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentBlogSlide(index)}
-                    className={`w-3 h-3 rounded-full transition-colors ${
-                      currentBlogSlide === index ? "bg-orange-500" : "bg-warmBrown-300"
-                    }`}
-                  />
-                ))}
-              </div>
-              <Button
-                variant="outline"
-                onClick={nextBlogSlide}
-                className="rounded-full p-3 border-warmBrown-300 hover:bg-warmBrown-100"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </Button>
+            <div className="space-y-6">
+              <h3 className="text-xl sm:text-2xl font-bold text-amber-900">Our Journey</h3>
+              <p className="text-amber-700 leading-relaxed text-sm sm:text-base">
+                Relaxed Axolotl began as a passion project in 2020, born from a deep appreciation for the healing power
+                of sound and meditation. What started as simple recordings shared with friends and family has grown into
+                a community of over 90,000 subscribers who find peace and tranquility through our compositions.
+              </p>
+              <p className="text-amber-700 leading-relaxed text-sm sm:text-base">
+                Our name was inspired by the axolotl, a unique amphibian known for its calm demeanor and remarkable
+                regenerative abilities – qualities we hope to nurture in our listeners through the power of meditation
+                music.
+              </p>
+              <h3 className="text-xl sm:text-2xl font-bold text-amber-900 mt-8">Our Mission</h3>
+              <p className="text-amber-700 leading-relaxed text-sm sm:text-base">
+                We believe that everyone deserves access to tools that promote mental wellbeing. Our mission is to
+                create high-quality meditation music that helps people find moments of peace in their busy lives, reduce
+                stress and anxiety, and connect with their inner selves.
+              </p>
+              <Button className="bg-amber-600 hover:bg-amber-700 text-white mt-4">Learn More About Us</Button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Videos de YouTube */}
-      <section className="py-24 bg-gradient-to-b from-amber-50 to-orange-50">
-        <div className="container mx-auto px-6">
-          <motion.header
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-5xl md:text-6xl font-serif font-light text-warmBrown-900 mb-8">
-              Experiencias Audiovisuales
-            </h2>
-            <p className="text-2xl text-warmBrown-700 max-w-3xl mx-auto leading-relaxed">
-              Sumérgete en nuestras creaciones diseñadas para elevar tu conciencia y nutrir tu alma
-            </p>
-          </motion.header>
+      {/* Final CTA */}
+      <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-amber-600 to-orange-500">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Start Your Meditation Journey Today</h2>
+          <p className="text-xl text-amber-100 mb-8">Join our growing community of peaceful listeners on YouTube</p>
 
-          {/* Video Principal */}
-          <div className="max-w-6xl mx-auto mb-12">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8 }}
-              className="relative group"
-            >
-              <div className="aspect-video bg-gradient-to-br from-warmBrown-200 to-orange-200 rounded-3xl overflow-hidden shadow-2xl">
-                <img
-                  src={videos[currentVideoIndex].thumbnail || "/placeholder.svg"}
-                  alt={videos[currentVideoIndex].title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="w-24 h-24 bg-white/90 rounded-full flex items-center justify-center shadow-2xl">
-                    <Play className="w-12 h-12 text-orange-600 ml-1" />
-                  </div>
-                </div>
-                <div className="absolute bottom-6 left-6 right-6">
-                  <h3 className="text-2xl font-serif font-semibold text-white mb-2">
-                    {videos[currentVideoIndex].title}
-                  </h3>
-                  <p className="text-cream-200 leading-relaxed">{videos[currentVideoIndex].description}</p>
-                  <div className="flex items-center justify-between mt-4">
-                    <span className="text-cream-200 flex items-center">
-                      <Clock className="w-4 h-4 mr-2" />
-                      {videos[currentVideoIndex].duration}
-                    </span>
-                    <span className="text-cream-200">{videos[currentVideoIndex].views} visualizaciones</span>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Controles de navegación */}
-            <div className="flex justify-center items-center space-x-6 mt-8">
-              <Button
-                variant="outline"
-                onClick={prevVideo}
-                className="rounded-full p-4 border-warmBrown-300 hover:bg-warmBrown-100"
-              >
-                <ChevronLeft className="w-6 h-6" />
-              </Button>
-              <div className="flex space-x-3">
-                {videos.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentVideoIndex(index)}
-                    className={`w-4 h-4 rounded-full transition-colors ${
-                      currentVideoIndex === index ? "bg-orange-500" : "bg-warmBrown-300"
-                    }`}
-                  />
-                ))}
-              </div>
-              <Button
-                variant="outline"
-                onClick={nextVideo}
-                className="rounded-full p-4 border-warmBrown-300 hover:bg-warmBrown-100"
-              >
-                <ChevronRight className="w-6 h-6" />
-              </Button>
-            </div>
-          </div>
-
-          {/* Videos Relacionados */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-            {videos
-              .filter((_, index) => index !== currentVideoIndex)
-              .slice(0, 4)
-              .map((video, index) => (
-                <motion.div
-                  key={video.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="group cursor-pointer"
-                  onClick={() => setCurrentVideoIndex(videos.findIndex((v) => v.id === video.id))}
-                >
-                  <div className="aspect-video bg-gradient-to-br from-warmBrown-200 to-orange-200 rounded-xl overflow-hidden mb-4 shadow-lg group-hover:shadow-xl transition-shadow">
-                    <img
-                      src={video.thumbnail || "/placeholder.svg"}
-                      alt={video.title}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <div className="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center">
-                        <Play className="w-6 h-6 text-orange-600 ml-0.5" />
-                      </div>
-                    </div>
-                  </div>
-                  <h4 className="font-serif font-medium text-warmBrown-900 mb-2 line-clamp-2 group-hover:text-orange-700 transition-colors">
-                    {video.title}
-                  </h4>
-                  <div className="flex items-center justify-between text-sm text-warmBrown-600">
-                    <span>{video.duration}</span>
-                    <span>{video.views}</span>
-                  </div>
-                </motion.div>
-              ))}
-          </div>
-
-          <div className="text-center mt-12">
+          <a href="https://www.youtube.com/@RelaxedAxolotl" target="_blank" rel="noopener noreferrer">
             <Button
               size="lg"
-              className="bg-gradient-to-r from-orange-500 to-warmBrown-600 hover:from-orange-600 hover:to-warmBrown-700 text-white px-10 py-4 text-xl rounded-full shadow-xl transition-all duration-300 hover:scale-105"
+              className="bg-white text-amber-700 hover:bg-amber-50 px-12 py-6 text-xl font-medium shadow-lg"
             >
               <Youtube className="w-6 h-6 mr-3" />
-              Ver Canal Completo
+              Subscribe to Relaxed Axolotl
             </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Nuestra Comunidad */}
-      <section className="py-24 bg-gradient-to-b from-orange-50 to-warmBrown-50">
-        <div className="container mx-auto px-6">
-          <motion.header
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-5xl md:text-6xl font-serif font-light text-warmBrown-900 mb-8">Nuestra Comunidad</h2>
-            <p className="text-2xl text-warmBrown-700 max-w-3xl mx-auto leading-relaxed">
-              Únete a miles de almas que han encontrado su camino hacia la paz interior
-            </p>
-          </motion.header>
-
-          <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
-            {/* Columna Izquierda */}
-            <div className="space-y-8">
-              {/* Patreon */}
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
-              >
-                <Card className="bg-white/90 backdrop-blur-sm border-warmBrown-200/50 hover:shadow-2xl transition-all duration-500 group rounded-2xl overflow-hidden">
-                  <CardContent className="p-8">
-                    <div className="flex items-center space-x-4 mb-6">
-                      <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center shadow-lg">
-                        <span className="text-2xl text-white font-bold">P</span>
-                      </div>
-                      <div>
-                        <h3 className="text-2xl font-serif font-semibold text-warmBrown-900">Patreon</h3>
-                        <p className="text-warmBrown-600">Comunidad Exclusiva</p>
-                      </div>
-                    </div>
-                    <p className="text-warmBrown-700 mb-6 leading-relaxed">
-                      Únete a nuestra familia de patrocinadores y accede a contenido exclusivo, sesiones privadas y la
-                      oportunidad de influir en nuestras próximas creaciones.
-                    </p>
-                    <div className="space-y-3 mb-6">
-                      <div className="flex items-center text-warmBrown-700">
-                        <Star className="w-4 h-4 mr-3 text-orange-500" />
-                        Contenido exclusivo sin anuncios
-                      </div>
-                      <div className="flex items-center text-warmBrown-700">
-                        <Star className="w-4 h-4 mr-3 text-orange-500" />
-                        Sesiones de meditación privadas
-                      </div>
-                      <div className="flex items-center text-warmBrown-700">
-                        <Star className="w-4 h-4 mr-3 text-orange-500" />
-                        Acceso anticipado a nuevos videos
-                      </div>
-                    </div>
-                    <Button className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white rounded-full py-3 font-semibold">
-                      Convertirse en Patreon
-                    </Button>
-                  </CardContent>
-                </Card>
-              </motion.div>
-
-              {/* Substack */}
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-              >
-                <Card className="bg-white/90 backdrop-blur-sm border-warmBrown-200/50 hover:shadow-2xl transition-all duration-500 group rounded-2xl overflow-hidden">
-                  <CardContent className="p-8">
-                    <div className="flex items-center space-x-4 mb-6">
-                      <div className="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center shadow-lg">
-                        <span className="text-2xl text-white font-bold">S</span>
-                      </div>
-                      <div>
-                        <h3 className="text-2xl font-serif font-semibold text-warmBrown-900">Substack</h3>
-                        <p className="text-warmBrown-600">Newsletter Semanal</p>
-                      </div>
-                    </div>
-                    <p className="text-warmBrown-700 mb-6 leading-relaxed">
-                      Recibe reflexiones profundas, técnicas de meditación avanzadas y contenido inspirador directamente
-                      en tu correo cada semana.
-                    </p>
-                    <div className="space-y-3 mb-6">
-                      <div className="flex items-center text-warmBrown-700">
-                        <Star className="w-4 h-4 mr-3 text-amber-500" />
-                        Reflexiones semanales profundas
-                      </div>
-                      <div className="flex items-center text-warmBrown-700">
-                        <Star className="w-4 h-4 mr-3 text-amber-500" />
-                        Técnicas de meditación exclusivas
-                      </div>
-                      <div className="flex items-center text-warmBrown-700">
-                        <Star className="w-4 h-4 mr-3 text-amber-500" />
-                        Contenido inspirador personalizado
-                      </div>
-                    </div>
-                    <Button
-                      variant="outline"
-                      className="w-full border-2 border-amber-400 text-amber-700 hover:bg-amber-50 rounded-full py-3 font-semibold"
-                    >
-                      Suscribirse al Newsletter
-                    </Button>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </div>
-
-            {/* Columna Derecha */}
-            <div className="space-y-8">
-              {/* Reddit */}
-              <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
-              >
-                <Card className="bg-white/90 backdrop-blur-sm border-warmBrown-200/50 hover:shadow-2xl transition-all duration-500 group rounded-2xl overflow-hidden">
-                  <CardContent className="p-8">
-                    <div className="flex items-center space-x-4 mb-6">
-                      <div className="w-16 h-16 bg-gradient-to-r from-orange-600 to-red-600 rounded-full flex items-center justify-center shadow-lg">
-                        <span className="text-2xl text-white font-bold">r/</span>
-                      </div>
-                      <div>
-                        <h3 className="text-2xl font-serif font-semibold text-warmBrown-900">Reddit</h3>
-                        <p className="text-warmBrown-600">Comunidad Activa</p>
-                      </div>
-                    </div>
-                    <p className="text-warmBrown-700 mb-6 leading-relaxed">
-                      Participa en discusiones profundas, comparte tus experiencias de meditación y conecta con otros
-                      buscadores de la paz interior.
-                    </p>
-                    <div className="space-y-3 mb-6">
-                      <div className="flex items-center text-warmBrown-700">
-                        <Star className="w-4 h-4 mr-3 text-orange-500" />
-                        Discusiones diarias sobre meditación
-                      </div>
-                      <div className="flex items-center text-warmBrown-700">
-                        <Star className="w-4 h-4 mr-3 text-orange-500" />
-                        Intercambio de experiencias
-                      </div>
-                      <div className="flex items-center text-warmBrown-700">
-                        <Star className="w-4 h-4 mr-3 text-orange-500" />
-                        Apoyo comunitario 24/7
-                      </div>
-                    </div>
-                    <Button
-                      variant="outline"
-                      className="w-full border-2 border-orange-400 text-orange-700 hover:bg-orange-50 rounded-full py-3 font-semibold"
-                    >
-                      Unirse a r/RelaxedAxolotl
-                    </Button>
-                  </CardContent>
-                </Card>
-              </motion.div>
-
-              {/* Estadísticas de la Comunidad */}
-              <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-              >
-                <Card className="bg-gradient-to-br from-warmBrown-100 to-orange-100 border-warmBrown-200/50 rounded-2xl overflow-hidden">
-                  <CardContent className="p-8 text-center">
-                    <h3 className="text-2xl font-serif font-semibold text-warmBrown-900 mb-6">Nuestra Familia Crece</h3>
-                    <div className="grid grid-cols-2 gap-6">
-                      <div>
-                        <div className="text-3xl font-bold text-orange-600 mb-2">50K+</div>
-                        <div className="text-warmBrown-700">Suscriptores</div>
-                      </div>
-                      <div>
-                        <div className="text-3xl font-bold text-orange-600 mb-2">2M+</div>
-                        <div className="text-warmBrown-700">Visualizaciones</div>
-                      </div>
-                      <div>
-                        <div className="text-3xl font-bold text-orange-600 mb-2">500+</div>
-                        <div className="text-warmBrown-700">Patrocinadores</div>
-                      </div>
-                      <div>
-                        <div className="text-3xl font-bold text-orange-600 mb-2">95%</div>
-                        <div className="text-warmBrown-700">Satisfacción</div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Servicios Personalizados */}
-      <section className="py-24 bg-gradient-to-b from-warmBrown-50 to-cream-50">
-        <div className="container mx-auto px-6">
-          <motion.header
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-5xl md:text-6xl font-serif font-light text-warmBrown-900 mb-8">
-              Servicios Personalizados
-            </h2>
-            <p className="text-2xl text-warmBrown-700 max-w-3xl mx-auto leading-relaxed">
-              Experiencias únicas diseñadas especialmente para tu viaje personal hacia la paz interior
-            </p>
-          </motion.header>
-
-          <div className="grid lg:grid-cols-2 gap-16 max-w-7xl mx-auto">
-            {/* Sesiones de Meditación Guiada */}
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              <Card className="bg-white/90 backdrop-blur-sm border-warmBrown-200/50 hover:shadow-2xl transition-all duration-500 rounded-2xl overflow-hidden h-full">
-                <CardContent className="p-10">
-                  <div className="text-center mb-8">
-                    <div className="w-20 h-20 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl">
-                      <Heart className="w-10 h-10 text-white" />
-                    </div>
-                    <h3 className="text-3xl font-serif font-semibold text-warmBrown-900 mb-4">
-                      Sesiones de Meditación Guiada
-                    </h3>
-                    <p className="text-warmBrown-700 leading-relaxed text-lg">
-                      Sesiones personalizadas uno a uno donde te guío a través de técnicas específicas adaptadas a tus
-                      necesidades y objetivos espirituales únicos.
-                    </p>
-                  </div>
-
-                  <div className="space-y-4 mb-8">
-                    <div className="flex items-start space-x-3">
-                      <Star className="w-5 h-5 text-orange-500 mt-1 flex-shrink-0" />
-                      <div>
-                        <h4 className="font-semibold text-warmBrown-900">Sesiones Individuales</h4>
-                        <p className="text-warmBrown-700">Meditación personalizada según tu nivel y objetivos</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start space-x-3">
-                      <Star className="w-5 h-5 text-orange-500 mt-1 flex-shrink-0" />
-                      <div>
-                        <h4 className="font-semibold text-warmBrown-900">Técnicas Avanzadas</h4>
-                        <p className="text-warmBrown-700">Métodos especializados para necesidades específicas</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start space-x-3">
-                      <Star className="w-5 h-5 text-orange-500 mt-1 flex-shrink-0" />
-                      <div>
-                        <h4 className="font-semibold text-warmBrown-900">Seguimiento Continuo</h4>
-                        <p className="text-warmBrown-700">Apoyo y guía en tu progreso espiritual</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <form className="space-y-4">
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <Input
-                        placeholder="Tu nombre"
-                        className="bg-warmBrown-50 border-warmBrown-200 focus:border-orange-400"
-                      />
-                      <Input
-                        type="email"
-                        placeholder="Tu email"
-                        className="bg-warmBrown-50 border-warmBrown-200 focus:border-orange-400"
-                      />
-                    </div>
-                    <Input
-                      placeholder="Teléfono (opcional)"
-                      className="bg-warmBrown-50 border-warmBrown-200 focus:border-orange-400"
-                    />
-                    <Textarea
-                      placeholder="Cuéntanos sobre tu experiencia con la meditación y qué te gustaría lograr..."
-                      rows={4}
-                      className="bg-warmBrown-50 border-warmBrown-200 focus:border-orange-400"
-                    />
-                    <Button className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white py-3 rounded-full font-semibold text-lg">
-                      Solicitar Sesión Personalizada
-                    </Button>
-                  </form>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            {/* Música Personalizada */}
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              <Card className="bg-white/90 backdrop-blur-sm border-warmBrown-200/50 hover:shadow-2xl transition-all duration-500 rounded-2xl overflow-hidden h-full">
-                <CardContent className="p-10">
-                  <div className="text-center mb-8">
-                    <div className="w-20 h-20 bg-gradient-to-r from-orange-500 to-warmBrown-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl">
-                      <Play className="w-10 h-10 text-white" />
-                    </div>
-                    <h3 className="text-3xl font-serif font-semibold text-warmBrown-900 mb-4">Música Personalizada</h3>
-                    <p className="text-warmBrown-700 leading-relaxed text-lg">
-                      Composiciones únicas creadas específicamente para ti, incorporando frecuencias y elementos sonoros
-                      que resuenen con tu energía personal.
-                    </p>
-                  </div>
-
-                  <div className="space-y-4 mb-8">
-                    <div className="flex items-start space-x-3">
-                      <Star className="w-5 h-5 text-orange-500 mt-1 flex-shrink-0" />
-                      <div>
-                        <h4 className="font-semibold text-warmBrown-900">Composiciones Únicas</h4>
-                        <p className="text-warmBrown-700">Música creada exclusivamente para ti</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start space-x-3">
-                      <Star className="w-5 h-5 text-orange-500 mt-1 flex-shrink-0" />
-                      <div>
-                        <h4 className="font-semibold text-warmBrown-900">Frecuencias Específicas</h4>
-                        <p className="text-warmBrown-700">Tonos adaptados a tus necesidades energéticas</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start space-x-3">
-                      <Star className="w-5 h-5 text-orange-500 mt-1 flex-shrink-0" />
-                      <div>
-                        <h4 className="font-semibold text-warmBrown-900">Múltiples Formatos</h4>
-                        <p className="text-warmBrown-700">Disponible en alta calidad para todos tus dispositivos</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <form className="space-y-4">
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <Input
-                        placeholder="Tu nombre"
-                        className="bg-warmBrown-50 border-warmBrown-200 focus:border-orange-400"
-                      />
-                      <Input
-                        type="email"
-                        placeholder="Tu email"
-                        className="bg-warmBrown-50 border-warmBrown-200 focus:border-orange-400"
-                      />
-                    </div>
-                    <Input
-                      placeholder="Tipo de música preferida (relajante, energizante, etc.)"
-                      className="bg-warmBrown-50 border-warmBrown-200 focus:border-orange-400"
-                    />
-                    <Textarea
-                      placeholder="Describe el propósito de la música (meditación, trabajo, sueño, etc.) y cualquier preferencia específica..."
-                      rows={4}
-                      className="bg-warmBrown-50 border-warmBrown-200 focus:border-orange-400"
-                    />
-                    <Button className="w-full bg-gradient-to-r from-orange-500 to-warmBrown-600 hover:from-orange-600 hover:to-warmBrown-700 text-white py-3 rounded-full font-semibold text-lg">
-                      Solicitar Música Personalizada
-                    </Button>
-                  </form>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </div>
-
-          {/* Información de Contacto */}
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="mt-16 text-center"
-          >
-            <Card className="bg-gradient-to-r from-warmBrown-100 to-orange-100 border-warmBrown-200/50 rounded-2xl max-w-4xl mx-auto">
-              <CardContent className="p-10">
-                <h3 className="text-3xl font-serif font-semibold text-warmBrown-900 mb-6">
-                  ¿Tienes algo específico en mente?
-                </h3>
-                <p className="text-xl text-warmBrown-700 mb-8 leading-relaxed">
-                  Estamos aquí para crear experiencias únicas que nutran tu alma. Contáctanos para discutir tus
-                  necesidades específicas.
-                </p>
-                <div className="flex flex-wrap justify-center gap-8 mb-8">
-                  <div className="flex items-center space-x-3">
-                    <Mail className="w-6 h-6 text-orange-600" />
-                    <span className="text-warmBrown-800 font-medium">hello@relaxedaxolotl.com</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <Phone className="w-6 h-6 text-orange-600" />
-                    <span className="text-warmBrown-800 font-medium">+1 (555) 123-4567</span>
-                  </div>
-                </div>
-                <Button
-                  size="lg"
-                  className="bg-gradient-to-r from-warmBrown-600 to-orange-600 hover:from-warmBrown-700 hover:to-orange-700 text-white px-10 py-4 text-xl rounded-full font-semibold"
-                >
-                  Contactar Directamente
-                </Button>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Quiénes Somos */}
-      <section className="py-24 bg-gradient-to-b from-cream-50 to-warmBrown-50">
-        <div className="container mx-auto px-6">
-          <motion.header
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-5xl md:text-6xl font-serif font-light text-warmBrown-900 mb-8">Quiénes Somos</h2>
-            <p className="text-2xl text-warmBrown-700 max-w-3xl mx-auto leading-relaxed">
-              La historia detrás de Relaxed Axolotl y nuestra misión de llevar paz al mundo
-            </p>
-          </motion.header>
-
-          <div className="max-w-7xl mx-auto">
-            <div className="grid lg:grid-cols-2 gap-16 items-center mb-20">
-              {/* Imagen */}
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
-                className="relative"
-              >
-                <div className="aspect-square bg-gradient-to-br from-warmBrown-200 to-orange-200 rounded-3xl overflow-hidden shadow-2xl">
-                  <img
-                    src="/placeholder.svg?height=600&width=600"
-                    alt="Relaxed Axolotl Story"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-r from-orange-400 to-warmBrown-500 rounded-full blur-2xl opacity-30"></div>
-              </motion.div>
-
-              {/* Contenido */}
-              <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
-                className="space-y-8"
-              >
-                <h3 className="text-4xl font-serif font-semibold text-warmBrown-900">Nuestra Historia</h3>
-                <div className="space-y-6 text-lg text-warmBrown-700 leading-relaxed">
-                  <p>
-                    Relaxed Axolotl nació de una profunda necesidad personal de encontrar paz en un mundo cada vez más
-                    acelerado. Lo que comenzó como una búsqueda individual se transformó en una misión compartida: crear
-                    espacios sonoros que nutran el alma y eleven la conciencia.
-                  </p>
-                  <p>
-                    Inspirados por la serenidad natural del axolotl, una criatura que simboliza la regeneración y la
-                    tranquilidad, decidimos canalizar esa energía en composiciones que trascienden lo ordinario y tocan
-                    lo sagrado en cada uno de nosotros.
-                  </p>
-                  <p>
-                    Cada pieza que creamos es el resultado de años de estudio en técnicas de meditación, frecuencias
-                    curativas y la ciencia del sonido. Nuestro objetivo es simple pero profundo: ayudarte a encontrar tu
-                    centro, tu paz, tu hogar interior.
-                  </p>
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Misión y Valores */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="grid md:grid-cols-3 gap-8 mb-16"
-            >
-              <Card className="bg-white/90 backdrop-blur-sm border-warmBrown-200/50 hover:shadow-xl transition-all duration-500 rounded-2xl text-center">
-                <CardContent className="p-8">
-                  <div className="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-                    <Heart className="w-8 h-8 text-white" />
-                  </div>
-                  <h4 className="text-2xl font-serif font-semibold text-warmBrown-900 mb-4">Nuestra Misión</h4>
-                  <p className="text-warmBrown-700 leading-relaxed">
-                    Crear experiencias sonoras que faciliten la conexión profunda contigo mismo y fomenten la paz
-                    interior en un mundo que necesita sanación.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-white/90 backdrop-blur-sm border-warmBrown-200/50 hover:shadow-xl transition-all duration-500 rounded-2xl text-center">
-                <CardContent className="p-8">
-                  <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-warmBrown-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-                    <Star className="w-8 h-8 text-white" />
-                  </div>
-                  <h4 className="text-2xl font-serif font-semibold text-warmBrown-900 mb-4">Nuestros Valores</h4>
-                  <p className="text-warmBrown-700 leading-relaxed">
-                    Autenticidad, compasión y excelencia en cada creación. Creemos en el poder transformador de la
-                    música consciente y el arte como medicina para el alma.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-white/90 backdrop-blur-sm border-warmBrown-200/50 hover:shadow-xl transition-all duration-500 rounded-2xl text-center">
-                <CardContent className="p-8">
-                  <div className="w-16 h-16 bg-gradient-to-r from-warmBrown-600 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-                    <Users className="w-8 h-8 text-white" />
-                  </div>
-                  <h4 className="text-2xl font-serif font-semibold text-warmBrown-900 mb-4">Nuestra Visión</h4>
-                  <p className="text-warmBrown-700 leading-relaxed">
-                    Un mundo donde cada persona tenga acceso a herramientas de paz interior, creando una red global de
-                    conciencias elevadas y corazones sanados.
-                  </p>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            {/* Llamada a la Acción Final */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-center"
-            >
-              <Card className="bg-gradient-to-r from-warmBrown-100 via-orange-100 to-amber-100 border-warmBrown-200/50 rounded-3xl max-w-4xl mx-auto">
-                <CardContent className="p-12">
-                  <h3 className="text-4xl font-serif font-semibold text-warmBrown-900 mb-6">Únete a Nuestra Misión</h3>
-                  <p className="text-xl text-warmBrown-700 mb-8 leading-relaxed">
-                    Cada suscriptor, cada like, cada comentario nos ayuda a llevar más paz al mundo. Sé parte de esta
-                    hermosa comunidad de almas que buscan la tranquilidad y la elevación espiritual.
-                  </p>
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Button
-                      size="lg"
-                      className="bg-gradient-to-r from-orange-500 to-warmBrown-600 hover:from-orange-600 hover:to-warmBrown-700 text-white px-10 py-4 text-xl rounded-full font-semibold shadow-xl transition-all duration-300 hover:scale-105"
-                    >
-                      <Youtube className="w-6 h-6 mr-3" />
-                      Suscribirse Ahora
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="lg"
-                      className="border-2 border-warmBrown-400 text-warmBrown-700 hover:bg-warmBrown-50 px-10 py-4 text-xl rounded-full font-semibold transition-all duration-300 hover:scale-105"
-                    >
-                      <Heart className="w-6 h-6 mr-3" />
-                      Apoyar la Misión
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </div>
+          </a>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gradient-to-r from-warmBrown-900 via-warmBrown-800 to-warmBrown-900 text-cream-100 py-16">
-        <div className="container mx-auto px-6">
-          <div className="text-center">
-            <div className="flex items-center justify-center space-x-4 mb-8">
+      <footer className="bg-gradient-to-r from-amber-900 to-orange-800 text-white py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="sm:col-span-2">
               <img
-                src="/placeholder.svg?height=48&width=48"
+                src="/logo-relaxed-axolotl.png"
                 alt="Relaxed Axolotl Logo"
-                className="w-12 h-12 rounded-full border-2 border-cream-200/30 shadow-xl"
-                width={48}
-                height={48}
+                className="h-12 sm:h-16 w-auto object-contain mb-4"
               />
-              <span className="text-3xl font-serif font-semibold">Relaxed Axolotl</span>
-            </div>
-
-            <p className="text-cream-200 mb-8 leading-relaxed text-lg max-w-2xl mx-auto">
-              Creando espacios de paz y tranquilidad para nutrir el alma y elevar la conciencia
-            </p>
-
-            <div className="flex justify-center space-x-6 mb-8">
-              <Button
-                variant="ghost"
-                size="lg"
-                className="text-cream-200 hover:text-white hover:bg-warmBrown-700 rounded-full p-4"
-              >
-                <Youtube className="w-6 h-6" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="lg"
-                className="text-cream-200 hover:text-white hover:bg-warmBrown-700 rounded-full p-4"
-              >
-                <Instagram className="w-6 h-6" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="lg"
-                className="text-cream-200 hover:text-white hover:bg-warmBrown-700 rounded-full p-4"
-              >
-                <Twitter className="w-6 h-6" />
-              </Button>
-            </div>
-
-            <div className="border-t border-warmBrown-700 pt-8">
-              <p className="text-cream-300/70 text-sm">
-                © 2024 Relaxed Axolotl. Todos los derechos reservados. Hecho con ❤️ para elevar la conciencia mundial.
+              <p className="text-amber-100 mb-4 max-w-md text-sm sm:text-base">
+                Creating peaceful soundscapes for meditation, relaxation, and inner harmony. Join our community of
+                mindful listeners.
               </p>
+            </div>
+            <div>
+              <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
+              <ul className="space-y-2 text-amber-100 text-sm sm:text-base">
+                <li>
+                  <a href="#home" className="hover:text-white transition-colors">
+                    Home
+                  </a>
+                </li>
+                <li>
+                  <a href="#blog" className="hover:text-white transition-colors">
+                    Blog
+                  </a>
+                </li>
+                <li>
+                  <a href="#videos" className="hover:text-white transition-colors">
+                    Videos
+                  </a>
+                </li>
+                <li>
+                  <a href="#community" className="hover:text-white transition-colors">
+                    Community
+                  </a>
+                </li>
+                <li>
+                  <a href="#contact" className="hover:text-white transition-colors">
+                    Contact
+                  </a>
+                </li>
+                <li>
+                  <a href="#about" className="hover:text-white transition-colors">
+                    About
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-lg font-semibold mb-4">Connect</h4>
+              <ul className="space-y-2 text-amber-100 text-sm sm:text-base">
+                <li>
+                  <a
+                    href="https://www.youtube.com/@RelaxedAxolotl"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-white transition-colors"
+                  >
+                    YouTube
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Substack
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Reddit
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Patreon
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Instagram
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Legal Links */}
+          <div className="border-t border-amber-700 mt-8 pt-8">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+              <p className="text-amber-200 text-sm sm:text-base text-center md:text-left">
+                &copy; 2024 Relaxed Axolotl. All rights reserved. Made with ♥ for peaceful minds.
+              </p>
+              <div className="flex flex-wrap justify-center gap-4 text-amber-200 text-sm">
+                <a href="/privacy" className="hover:text-white transition-colors">
+                  Privacy Policy
+                </a>
+                <span className="hidden sm:inline">•</span>
+                <a href="/terms" className="hover:text-white transition-colors">
+                  Terms of Service
+                </a>
+                <span className="hidden sm:inline">•</span>
+                <a href="/copyright" className="hover:text-white transition-colors">
+                  Copyright
+                </a>
+                <span className="hidden sm:inline">•</span>
+                <a href="/cookies" className="hover:text-white transition-colors">
+                  Cookie Policy
+                </a>
+                <span className="hidden sm:inline">•</span>
+                <a href="#contact" className="hover:text-white transition-colors">
+                  DMCA
+                </a>
+              </div>
             </div>
           </div>
         </div>
       </footer>
+
+      {/* Scroll to Top Button */}
+      <ScrollToTop />
     </div>
   )
 }
