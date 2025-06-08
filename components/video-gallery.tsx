@@ -26,7 +26,11 @@ const videos: Video[] = [
     duration: "1:00:22",
     views: "29K", // Actualizar con las vistas reales
     category: "meditation",
+<<<<<<< HEAD
     youtubeId: "e6MNGvGTuos", // Reemplazar con el ID real del video
+=======
+    youtubeId: "YOUR_REAL_VIDEO_ID_1", // Reemplazar con el ID real del video
+>>>>>>> 121b15727494e2c16c4f0261ed73f7029b049562
     description:
       "Deep atmospheric sounds designed to create a peaceful meditation environment. Perfect for relaxation and mindfulness practice.",
     uploadDate: "1 month ago",
