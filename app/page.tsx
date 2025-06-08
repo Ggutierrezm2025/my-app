@@ -246,8 +246,8 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div className="relative rounded-xl overflow-hidden h-64 sm:h-80 lg:h-96">
               <img
-                src="/placeholder.svg?height=400&width=600"
-                alt="Relaxed Axolotl Studio"
+                src="/about-relaxed-axolotl.jpg"
+                alt="About Relaxed Axolotl"
                 className="absolute inset-0 w-full h-full object-cover"
               />
             </div>
