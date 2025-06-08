@@ -12,7 +12,7 @@ interface Video {
   duration: string
   views: string
   category: string
-  youtubeId: string // Necesitarás reemplazar estos con los IDs reales
+  youtubeId: string
   description: string
   uploadDate: string
 }
@@ -22,15 +22,11 @@ const videos: Video[] = [
   {
     id: "video1",
     title: "Zen Cloud: Deep Atmospheric Sounds for Meditation",
-    thumbnail: "/placeholder.svg?height=200&width=350", // Se reemplazará con la miniatura real de YouTube
+    thumbnail: "/placeholder.svg?height=200&width=350",
     duration: "1:00:22",
-    views: "29K", // Actualizar con las vistas reales
+    views: "29K",
     category: "meditation",
-<<<<<<< HEAD
-    youtubeId: "e6MNGvGTuos", // Reemplazar con el ID real del video
-=======
-    youtubeId: "YOUR_REAL_VIDEO_ID_1", // Reemplazar con el ID real del video
->>>>>>> 121b15727494e2c16c4f0261ed73f7029b049562
+    youtubeId: "e6MNGvGTuos",
     description:
       "Deep atmospheric sounds designed to create a peaceful meditation environment. Perfect for relaxation and mindfulness practice.",
     uploadDate: "1 month ago",
@@ -42,7 +38,7 @@ const videos: Video[] = [
     duration: "59:53",
     views: "15K",
     category: "meditation",
-    youtubeId: "YOUR_REAL_VIDEO_ID_2", // Reemplazar con el ID real del video
+    youtubeId: "f1wtMDZewmY",
     description:
       "Find your inner peace with this gentle meditation music designed to help you relax and center yourself.",
     uploadDate: "1 month ago",
@@ -54,7 +50,7 @@ const videos: Video[] = [
     duration: "1:00:03",
     views: "64K",
     category: "anxiety",
-    youtubeId: "YOUR_REAL_VIDEO_ID_3", // Reemplazar con el ID real del video
+    youtubeId: "4NOlKhr98Yo",
     description:
       "Begin your day with this calming meditation designed specifically to reduce anxiety and promote a sense of peace.",
     uploadDate: "5 months ago",
@@ -66,7 +62,7 @@ const videos: Video[] = [
     duration: "1:00:01",
     views: "99K",
     category: "sleep",
-    youtubeId: "YOUR_REAL_VIDEO_ID_4", // Reemplazar con el ID real del video
+    youtubeId: "35GBRCu7H8k",
     description:
       "Immerse yourself in the tranquil sounds of a pine forest, perfect for deep relaxation and preparing for restful sleep.",
     uploadDate: "6 months ago",
@@ -78,7 +74,7 @@ const videos: Video[] = [
     duration: "1:00:01",
     views: "56K",
     category: "nature",
-    youtubeId: "YOUR_REAL_VIDEO_ID_5", // Reemplazar con el ID real del video
+    youtubeId: "YOUR_REAL_VIDEO_ID_5", // Reemplaza con el ID real
     description:
       "Transport yourself to an enchanted rainforest with these immersive nature sounds that create a peaceful atmosphere.",
     uploadDate: "6 months ago",
@@ -90,8 +86,9 @@ const videos: Video[] = [
     duration: "59:38",
     views: "63K",
     category: "meditation",
-    youtubeId: "YOUR_REAL_VIDEO_ID_6", // Reemplazar con el ID real del video
-    description: "Let the gentle sounds of a bamboo forest guide you into a state of deep relaxation and mindfulness.",
+    youtubeId: "YOUR_REAL_VIDEO_ID_6", // Reemplaza con el ID real
+    description:
+      "Let the gentle sounds of a bamboo forest guide you into a state of deep relaxation and mindfulness.",
     uploadDate: "6 months ago",
   },
 ]
