@@ -22,7 +22,7 @@ const videos: Video[] = [
   {
     id: "video1",
     title: "Zen Cloud: Deep Atmospheric Sounds for Meditation",
-    thumbnail: "/placeholder.svg?height=200&width=350",
+    thumbnail: `https://img.youtube.com/vi/e6MNGvGTuos/maxresdefault.jpg`,
     duration: "1:00:22",
     views: "29K",
     category: "meditation",
@@ -34,7 +34,7 @@ const videos: Video[] = [
   {
     id: "video2",
     title: "Zen Path: Deep Relaxation & Meditation Music for Inner Peace",
-    thumbnail: "/placeholder.svg?height=200&width=350",
+    thumbnail: `https://img.youtube.com/vi/f1wtMDZewmY/maxresdefault.jpg`,
     duration: "59:53",
     views: "15K",
     category: "meditation",
@@ -46,7 +46,7 @@ const videos: Video[] = [
   {
     id: "video3",
     title: "Sunrise Meditation for Anxiety Relief | Start Your Day with Peace",
-    thumbnail: "/placeholder.svg?height=200&width=350",
+    thumbnail: `https://img.youtube.com/vi/4NOlKhr98Yo/maxresdefault.jpg`,
     duration: "1:00:03",
     views: "64K",
     category: "anxiety",
@@ -58,7 +58,7 @@ const videos: Video[] = [
   {
     id: "video4",
     title: "Pine Forest Meditation Music | Deep Relaxation and Sleep",
-    thumbnail: "/placeholder.svg?height=200&width=350",
+    thumbnail: `https://img.youtube.com/vi/35GBRCu7H8k/maxresdefault.jpg`,
     duration: "1:00:01",
     views: "99K",
     category: "sleep",
@@ -70,7 +70,7 @@ const videos: Video[] = [
   {
     id: "video5",
     title: "Enchanted Rainforest: A Soothing Escape with Nature Sounds",
-    thumbnail: "/placeholder.svg?height=200&width=350",
+    thumbnail: `https://img.youtube.com/vi/ffqd0lWYcQE/maxresdefault.jpg`,
     duration: "1:00:01",
     views: "56K",
     category: "nature",
@@ -82,13 +82,12 @@ const videos: Video[] = [
   {
     id: "video6",
     title: "Bamboo Forest: Meditation and Deep Relaxation Music",
-    thumbnail: "/placeholder.svg?height=200&width=350",
+    thumbnail: `https://img.youtube.com/vi/8rAqYCB93Lo/maxresdefault.jpg`,
     duration: "59:38",
     views: "63K",
     category: "meditation",
     youtubeId: "8rAqYCB93Lo",
-    description:
-      "Let the gentle sounds of a bamboo forest guide you into a state of deep relaxation and mindfulness.",
+    description: "Let the gentle sounds of a bamboo forest guide you into a state of deep relaxation and mindfulness.",
     uploadDate: "6 months ago",
   },
 ]
@@ -133,11 +132,7 @@ export function VideoGallery() {
             ) : (
               <>
                 <img
-                  src={
-                    selectedVideo.thumbnail !== "/placeholder.svg?height=200&width=350"
-                      ? selectedVideo.thumbnail
-                      : "/placeholder.svg?height=400&width=600"
-                  }
+                  src={selectedVideo.thumbnail || "/placeholder.svg"}
                   alt={selectedVideo.title}
                   className="w-full h-64 sm:h-80 lg:h-96 object-cover"
                 />
